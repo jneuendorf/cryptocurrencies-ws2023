@@ -1,0 +1,29 @@
+{
+    "name": "cryptocurrencies-ws2023",
+    "version": "0.0.1",
+    "description": "Ethereum voting system using ERC721 and ERC20",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jneuendorf/cryptocurrencies-ws2023.git"
+    },
+    "keywords": [
+        "ethereum",
+        "blockchain",
+        "smart-contract",
+        "erc721",
+        "erc20"
+    ],
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jneuendorf/cryptocurrencies-ws2023/issues"
+    },
+    "homepage": "https://github.com/jneuendorf/cryptocurrencies-ws2023#readme",
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.8.1"
+    }
+}
