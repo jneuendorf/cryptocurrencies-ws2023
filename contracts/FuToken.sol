@@ -63,7 +63,7 @@ contract FuToken {
         totalSupply += 1;
     }
 
-    function approve (address _to, uint256 _tokenId) public onlyOwnerOrApproved(_tokenId) {
+    function approve(address _to, uint256 _tokenId) public onlyOwnerOrApproved(_tokenId) {
         tokenApprovals[_tokenId] = _to;
         emit Approval(msg.sender, _to, _tokenId);
     }
