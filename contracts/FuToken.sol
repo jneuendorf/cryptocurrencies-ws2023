@@ -83,7 +83,7 @@ contract FuToken {
     }
 
     function transfer(address _to, uint256 _tokenId) public {
-        transferFrom (msg.sender, _to, _tokenId);   
+        transferFrom(msg.sender, _to, _tokenId);
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) public onlyOwnerOrApproved(_tokenId) {
