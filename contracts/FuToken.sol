@@ -116,7 +116,7 @@ contract FuToken {
     }
 
     // We are not implementing this to the necessary extend
-    function safeTransferFrom(address _from, address _to, uint _tokenId, bytes memory data ) public {
+    function safeTransferFrom(address _from, address _to, uint _tokenId, bytes memory data) public {
         transferFrom(_from, _to, _tokenId);
     }
 }
