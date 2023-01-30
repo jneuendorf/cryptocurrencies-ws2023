@@ -20,6 +20,7 @@ Für die NFTs gelten folgende Bedingungen:
 - Jeder, der ein NFT besitzt, sollte tokens minten können
 -- Jedes NFT sollte nur einmal minten können (mapping(tokenId => bool) minted)
 - Beim minten: Update-NFTs geben nur einen Token, andere abhängig vom Level(n + 1)
+- Lock Funktion oder nur Contract Owner darf Tokens umverteilen oder man transferiert Tokens bei Poll
 
 Schwierigkeiten:
 - Inter-Contract-Kommunikation
