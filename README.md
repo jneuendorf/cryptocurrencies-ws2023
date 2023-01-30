@@ -16,7 +16,7 @@ Für die NFTs gelten folgende Bedingungen:
 
 
 Phasen:
-Teil 1: Aufsetzen des ERC721 Vertrags inklusive Logik, wie wir beim ursprünglichen Mint vorgehen - wie kommen die Mitarbeiter an ihre Zertifikate?
-Teil 2: Aufsetzen ERC20 Vertrags und festlegen der Parameter wie Total Supply, Transferlogik etc.
-Teil 3: Mintlogik beider Verträge ist fertig, sie sind miteinander verbunden
-Teil 4: Weitere Dinge, die uns einfallen, implementieren: Wer darf wann auf welche Parameter im nachhinein zugreifen und sie verändern? Welche Sicherheitsaspekte muss man noch beachten? Wollen wir vielleicht doch noch einen dritten Smart Contract schreiben, weil das alles zu schnell ging?
+- Teil 1: Aufsetzen des ERC721 Vertrags inklusive Logik, wie wir beim ursprünglichen Mint vorgehen - wie kommen die Mitarbeiter an ihre Zertifikate?
+- Teil 2: Aufsetzen ERC20 Vertrags und festlegen der Parameter wie Total Supply, Transferlogik etc.
+- Teil 3: Mintlogik beider Verträge ist fertig, sie sind miteinander verbunden
+- Teil 4: Weitere Dinge, die uns einfallen, implementieren: Wer darf wann auf welche Parameter im nachhinein zugreifen und sie verändern? Welche Sicherheitsaspekte muss man noch beachten? Wollen wir vielleicht doch noch einen dritten Smart Contract schreiben, weil das alles zu schnell ging?
