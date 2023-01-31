@@ -155,6 +155,25 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getLevel",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "owner",
 						"type": "address"
@@ -179,13 +198,32 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "isUpgrade",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint8",
 						"name": "level",
 						"type": "uint8"
 					},
 					{
 						"internalType": "bool",
-						"name": "isUpgrade",
+						"name": "isUpgrade_",
 						"type": "bool"
 					}
 				],
@@ -226,7 +264,7 @@
 					},
 					{
 						"internalType": "bool",
-						"name": "isUpgrade",
+						"name": "isUpgrade_",
 						"type": "bool"
 					},
 					{
@@ -676,11 +714,11 @@
 			]
 		},
 		"contracts/FuNFT.sol": {
-			"keccak256": "0xd8fde018b5daa3065618a4b3c6e15d5b259660bb1ac734e59c8d7a0935ffeeee",
+			"keccak256": "0x4b3bfe3a59f8fb98901b3fefbdf8829774c7aeb7656f0cfe9cbedea7411afbf1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://be8399fe3af237b4262f3e4bfd4209635e82c78b9368ee1d662b2581861a99c4",
-				"dweb:/ipfs/QmZxoNpKVyEfuBVJHxvqrcNN6f8mJDKB5JyxTGYeNUf5z4"
+				"bzz-raw://3d9c43a7ccace8d2adbce4fce0fbb1910577d778ee7ade4c0a33a908937fe740",
+				"dweb:/ipfs/QmPuv6yTfihD1bKnSYPuGEk6J3aTwyz9mVBRNtjgMiCoNe"
 			]
 		}
 	},

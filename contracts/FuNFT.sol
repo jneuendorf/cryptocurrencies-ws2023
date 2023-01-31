@@ -61,18 +61,18 @@ contract FuNFT is ERC721 {
     /**
      * Let's the contract owner mint 1 new NFT token.
      */
-    function mint(uint8 level, bool isUpgrade) public onlyOwner returns(TokenInfo memory) {
+    function mint(uint8 level, bool isUpgrade_) public onlyOwner returns(TokenInfo memory) {
         uint256 nextTokenId = _totalSupply;
         _mint(_owner, nextTokenId);
         // register metadata
-        _infoByToken[nextTokenId] = TokenInfo(nextTokenId, level, isUpgrade);
+        _infoByToken[nextTokenId] = TokenInfo(nextTokenId, level, isUpgrade_);
         _totalSupply += 1;
 
         return _infoByToken[nextTokenId];
     }
 
-    function mint(uint8 level, bool isUpgrade, address to) external onlyOwner returns(TokenInfo memory) {
-        TokenInfo memory info = mint(level, isUpgrade);
+    function mint(uint8 level, bool isUpgrade_, address to) external onlyOwner returns(TokenInfo memory) {
+        TokenInfo memory info = mint(level, isUpgrade_);
         _safeTransfer(_owner, to, info.id, "");
 
         return info;
@@ -84,6 +84,14 @@ contract FuNFT is ERC721 {
 
     function tokenInfo(uint tokenId) public view returns(TokenInfo memory) {
         return _infoByToken[tokenId];
+    }
+
+    function getLevel(uint tokenId) public view returns(uint8) {
+        return _infoByToken[tokenId].level;
+    }
+
+    function isUpgrade(uint tokenId) public view returns(bool) {
+        return _infoByToken[tokenId].isUpgrade;
     }
 
     function ownedTokens(address owner_) public view returns(TokenInfo[] memory) {
