@@ -4,7 +4,7 @@ pragma solidity 0.8.17;
 contract FuToken {
 
     // create a struct that then can be accessed by the tokenId
-    struct Token {
+    struct TokenInfo {
         uint256 id;
         uint8 level;
         bool isUpgrade;
@@ -20,7 +20,7 @@ contract FuToken {
     mapping(address => mapping(address => bool)) operatorApprovals;
 
     // access the token structs through this mapping
-    mapping(uint256 => Token) tokenToInfo;
+    mapping(uint256 => TokenInfo) tokenToInfo;
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
     event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
@@ -58,7 +58,7 @@ contract FuToken {
         uint256 newTokenId = totalSupply;
         tokenToOwner[newTokenId] = msg.sender;
         // add TokenInfo to the token
-        tokenToInfo[newTokenId] = Token(newTokenId, _level, _isUpgrade);
+        tokenToInfo[newTokenId] = TokenInfo(newTokenId, _level, _isUpgrade);
         balance[msg.sender]++;
         totalSupply += 1;
     }
@@ -94,13 +94,13 @@ contract FuToken {
     }
 
     
-    function getTokenInfo(uint _tokenId) public view returns(Token memory) {
+    function getTokenInfo(uint _tokenId) public view returns(TokenInfo memory) {
         return tokenToInfo[_tokenId];
     }
 
-    function getOwnedTokens(address _owner) public view returns(Token[] memory) {
+    function getOwnedTokens(address _owner) public view returns(TokenInfo[] memory) {
         uint256 tokenFound = 0;
-        Token[] memory tokens = new Token[](balance[_owner]);
+        TokenInfo[] memory tokens = new TokenInfo[](balance[_owner]);
 
         for(uint i = 0; tokenFound < balance[_owner]; i++) {
             if (tokenToOwner[i] == _owner) {
