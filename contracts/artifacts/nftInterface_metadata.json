@@ -123,11 +123,11 @@
 			]
 		},
 		"contracts/FuVoteToken.sol": {
-			"keccak256": "0x2263f3dd1aa75f63dd954d8d7e28a2960586844a58712b1bd20838de181b349b",
+			"keccak256": "0x0b56abfab23360f4f8abcb92ab3602ec373fff44aa2b582ff99b29df2e9d662e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://caa6f11dea9799e36780f62ff20d333241a0eddd88eab54e78e68c938800cc9d",
-				"dweb:/ipfs/QmTVDQfipCbkatGStC3TtPQxLccaaNvSrw5FePdnXa1vvm"
+				"bzz-raw://5fc08b83e6f3bd76acc44313de406d8713c66a9d6a73cc30bfde52188132908b",
+				"dweb:/ipfs/QmcdS5roVfFFYsWHem8Fj61FQGWZqo8kfo9XDV1RmRKWsn"
 			]
 		}
 	},

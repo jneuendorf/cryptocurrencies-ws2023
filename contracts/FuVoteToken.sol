@@ -37,9 +37,15 @@ contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
         return 0;
     }
 
-    function trasferOwnership(address _to) public {
-        require(msg.sender == _contractOwner, "Only the owner can transfer the contract ownership");
+    function transferOwnership(address _to) public {
+        require(msg.sender == _contractOwner, "Only the contract owner can do this");
         _contractOwner = _to;
+    }
+
+    function changeNftContractAddress(address _address) public {
+        require(msg.sender == _contractOwner, "Only the contract owner can do this");
+        _nftContractAddress = _address;
+        nftContract = nftInterface(_address);
     }
 
     function mint(uint256 _nftToken) public {
