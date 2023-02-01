@@ -33,9 +33,9 @@ contract Voting {
         mapping(address => uint256) addressToTotalVotes;
     }
 
-    struct Result {
-        uint256 optionIndex;
-        uint256 votingCount;
+    struct FormatedResult {
+        string votingOption;
+        uint256 amountVotes;
     }
 
     constructor() {
@@ -97,9 +97,9 @@ contract Voting {
         return polls[_pollID].status;
     }
 
-    function getResults(uint256 _pollID) view public returns(Result[] memory){
+    function getResults(uint256 _pollID) view public returns(uint256[] memory){
         Poll storage poll = polls[_pollID];
-        Result[] memory result = new Result[](poll.votingOptionsCount);
+        uint256[] memory result = new uint256[](poll.votingOptionsCount);
 
         // iterate through the voting options
         for(uint256 votingOptionIndex; votingOptionIndex < poll.votingOptionsCount; votingOptionIndex++) {
@@ -112,10 +112,20 @@ contract Voting {
                 amountVotes += poll.votes[voterAddress][votingOptionIndex];
             }
             //put the result into the voting result-array
-            Result memory votingOptionResult = Result(votingOptionIndex, amountVotes);
-            result[votingOptionIndex] = votingOptionResult;
+            result[votingOptionIndex] = amountVotes;
         }
         return result;
+    }
+
+    function formatedResults(uint256 _pollID) view public returns(FormatedResult[] memory) {
+        Poll storage poll = polls[_pollID];
+        uint256[] memory results = getResults(_pollID);
+        FormatedResult[] memory formatedResult = new FormatedResult[](poll.votingOptionsCount);
+
+        for(uint256 i = 0; i < poll.votingOptionsCount; i++) {
+            formatedResult[i] = FormatedResult(poll.votingOptions[i], results[i]);
+        }
+        return formatedResult;
     }
 
     function returnCoinsAfterPoll(uint256 _pollID) internal onlyOwner {
