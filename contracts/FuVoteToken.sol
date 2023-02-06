@@ -52,10 +52,10 @@ contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
         require(msg.sender == nftContract.ownerOf(_nftToken), "You don't own this token");
         require(!hasMinted(_nftToken), "Token has already been used");
         uint8 mintAmount;
-        if (!nftContract.isUpgrade(_nftToken)) {
-            mintAmount = nftContract.getLevel(_nftToken);
-        } else {
+        if (nftContract.isUpgrade(_nftToken)) {
             mintAmount = 1;
+        } else {
+            mintAmount = nftContract.getLevel(_nftToken);
         }
         _mint(msg.sender, mintAmount);
         _minted[_nftToken] = true;

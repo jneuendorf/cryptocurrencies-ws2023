@@ -33,7 +33,7 @@ contract Voting {
         mapping(address => uint256) addressToTotalVotes;
     }
 
-    struct FormatedResult {
+    struct FormattedResult {
         string votingOption;
         uint256 amountVotes;
     }
@@ -117,15 +117,15 @@ contract Voting {
         return result;
     }
 
-    function formatedResults(uint256 _pollID) view public returns(FormatedResult[] memory) {
+    function formattedResults(uint256 _pollID) view public returns(FormattedResult[] memory) {
         Poll storage poll = polls[_pollID];
         uint256[] memory results = getResults(_pollID);
-        FormatedResult[] memory formatedResult = new FormatedResult[](poll.votingOptionsCount);
+        FormattedResult[] memory formattedResult = new FormattedResult[](poll.votingOptionsCount);
 
         for(uint256 i = 0; i < poll.votingOptionsCount; i++) {
-            formatedResult[i] = FormatedResult(poll.votingOptions[i], results[i]);
+            formattedResult[i] = FormattedResult(poll.votingOptions[i], results[i]);
         }
-        return formatedResult;
+        return formattedResult;
     }
 
     function returnCoinsAfterPoll(uint256 _pollID) internal onlyOwner {
