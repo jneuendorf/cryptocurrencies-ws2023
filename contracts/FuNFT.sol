@@ -25,12 +25,11 @@ contract FuNFT is ERC721 {
         uint256 id;
         // implies number of voting tokens
         uint8 level;
-        // implies number of votes: isUpgrade == false => votes == level, otherwise n + 1
+        // implies number of votes: isUpgrade == false => votes == level, otherwise 1
         bool isUpgrade;
     }
     // access the token structs through this mapping
-    mapping(uint256 => TokenInfo) private _infoByToken;    
-
+    mapping(uint256 => TokenInfo) private _infoByToken;
 
     constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
         _owner = msg.sender;
@@ -62,12 +61,21 @@ contract FuNFT is ERC721 {
     /**
      * Let's the contract owner mint 1 new NFT token.
      */
-    function mint(uint8 level, bool isUpgrade) external onlyOwner {
+    function mint(uint8 level, bool isUpgrade_) public onlyOwner returns(TokenInfo memory) {
         uint256 nextTokenId = _totalSupply;
         _mint(_owner, nextTokenId);
         // register metadata
-        _infoByToken[nextTokenId] = TokenInfo(nextTokenId, level, isUpgrade);
+        _infoByToken[nextTokenId] = TokenInfo(nextTokenId, level, isUpgrade_);
         _totalSupply += 1;
+
+        return _infoByToken[nextTokenId];
+    }
+
+    function mint(uint8 level, bool isUpgrade_, address to) external onlyOwner returns(TokenInfo memory) {
+        TokenInfo memory info = mint(level, isUpgrade_);
+        _safeTransfer(_owner, to, info.id, "");
+
+        return info;
     }
 
     function totalSupply() public view returns(uint256) {
@@ -76,6 +84,14 @@ contract FuNFT is ERC721 {
 
     function tokenInfo(uint tokenId) public view returns(TokenInfo memory) {
         return _infoByToken[tokenId];
+    }
+
+    function getLevel(uint tokenId) public view returns(uint8) {
+        return _infoByToken[tokenId].level;
+    }
+
+    function isUpgrade(uint tokenId) public view returns(bool) {
+        return _infoByToken[tokenId].isUpgrade;
     }
 
     function ownedTokens(address owner_) public view returns(TokenInfo[] memory) {
@@ -95,5 +111,4 @@ contract FuNFT is ERC721 {
         }
         return tokens;
     }
-
 }

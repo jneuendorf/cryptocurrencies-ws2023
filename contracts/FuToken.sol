@@ -37,9 +37,9 @@ contract FuToken {
 
     modifier onlyOwnerOrApproved(uint256 _tokenId) {
         require(
-        tokenToOwner[_tokenId] == msg.sender || 
+        tokenToOwner[_tokenId] == msg.sender ||
         tokenApprovals[_tokenId] == msg.sender ||
-        isApprovedForAll(tokenToOwner[_tokenId], msg.sender), 
+        isApprovedForAll(tokenToOwner[_tokenId], msg.sender),
         "You need to be approved or owner"
         );
         _;
@@ -52,8 +52,8 @@ contract FuToken {
     function ownerOf(uint256 _tokenId) public view returns(address) {
         return tokenToOwner[_tokenId];
     }
-    
-    
+
+
     function mint(uint8 _level, bool _isUpgrade) external onlyOwner {
         uint256 newTokenId = totalSupply;
         tokenToOwner[newTokenId] = msg.sender;
@@ -93,7 +93,7 @@ contract FuToken {
         emit Transfer(_from, _to, _tokenId);
     }
 
-    
+
     function getTokenInfo(uint _tokenId) public view returns(TokenInfo memory) {
         return tokenToInfo[_tokenId];
     }
