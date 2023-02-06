@@ -10,7 +10,7 @@ contract Voting {
     using Counters for Counters.Counter;
 
     // to vote transfer ERC20 token(s) to this address
-    address owner;    
+    address owner;
 
     Counters.Counter private _pollIdCounter;
 
@@ -62,11 +62,12 @@ contract Voting {
         return pollId;
     }
 
-    function startPoll(string memory _description, bool _allowMultipleOptions) external onlyOwner returns (uint256) {
-        string[] memory options;
-        options[0] = "Yes";
-        options[1] = "No";
-        return startPoll(_description, _allowMultipleOptions, options);
+    function startPoll(string memory _description) external onlyOwner returns (uint256) {
+        bool allowMultipleOptions = false;
+        string[] memory options = ["Yes", "No"];
+        // options[0] = "Yes";
+        // options[1] = "No";
+        return startPoll(_description, allowMultipleOptions, options);
     }
 
     function endPoll(uint256 _pollID) external onlyOwner {
@@ -130,6 +131,10 @@ contract Voting {
 
     function returnCoinsAfterPoll(uint256 _pollID) internal onlyOwner {
         Poll storage poll = polls[_pollID];
+        require(
+            poll.status == Status.CLOSED,
+            "Poll must be closed for coins to be returned"
+        );
         for (uint256 i = 0; i < poll.voters.length; i++) {
             address recipient = poll.voters[i];
             // transfer back funds
