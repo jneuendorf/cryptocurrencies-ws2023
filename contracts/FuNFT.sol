@@ -29,7 +29,7 @@ contract FuNFT is ERC721 {
         bool isUpgrade;
     }
     // access the token structs through this mapping
-    mapping(uint256 => TokenInfo) private _infoByToken;    
+    mapping(uint256 => TokenInfo) private _infoByToken;
 
     constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
         _owner = msg.sender;
