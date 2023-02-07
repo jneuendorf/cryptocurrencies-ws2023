@@ -6,6 +6,11 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 // TODO: change token to the ERC20Token we use
 import "../src/Coin.sol";
 
+interface VoteTokenInterface {
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+}
+
 contract Voting {
     using Counters for Counters.Counter;
 
@@ -17,7 +22,7 @@ contract Voting {
     enum Status { PENDING, IN_PROGRESS, CLOSED }
     mapping(uint256 => Poll) polls;
     // TODO: change token to the ERC20Token we use
-    Coin public token;
+    VoteTokenInterface private _voteToken;
 
     struct Poll {
         string description;
@@ -38,8 +43,9 @@ contract Voting {
         uint256 amountVotes;
     }
 
-    constructor() {
+    constructor(address voteTokenContractAddress) {
         owner = msg.sender;
+        _voteToken = VoteTokenInterface(voteTokenContractAddress);
     }
 
     modifier onlyOwner() {
@@ -64,9 +70,9 @@ contract Voting {
 
     function startPoll(string memory _description) external onlyOwner returns (uint256) {
         bool allowMultipleOptions = false;
-        string[] memory options = ["Yes", "No"];
-        // options[0] = "Yes";
-        // options[1] = "No";
+        string[] memory options;
+        options[0] = "Yes";
+        options[1] = "No";
         return startPoll(_description, allowMultipleOptions, options);
     }
 
@@ -78,11 +84,14 @@ contract Voting {
 
     function castVote(uint256 _pollID, uint256 _optionIndex, uint256 weight) public {
         require(getStatus(_pollID) == Status.IN_PROGRESS, "Poll is not in progress!");
+
+        // check if msg.sender has the required balance to vote their desired weight
+        require(_voteToken.balanceOf(msg.sender) >= weight, "Not enough vote tokens");
         require(weight > 0, "Cannot vote with 0 tokens!");
         address voter = msg.sender;
         // requires approval from the voter beforehand to transfer coins from his/her account to this contract owner address
         // to do that call the approve-method in the ERC20-Token before casting the vote
-        token.transferFrom(voter, owner, weight);
+        _voteToken.transferFrom(voter, owner, weight);
         Poll storage poll = polls[_pollID];
         // add vote
         poll.votes[voter][_optionIndex] += weight;
@@ -138,7 +147,7 @@ contract Voting {
         for (uint256 i = 0; i < poll.voters.length; i++) {
             address recipient = poll.voters[i];
             // transfer back funds
-            token.transferFrom(owner, recipient, poll.addressToTotalVotes[recipient]);
+            _voteToken.transferFrom(owner, recipient, poll.addressToTotalVotes[recipient]);
             // reset total votes for that address
             poll.addressToTotalVotes[recipient] = 0;
         }
