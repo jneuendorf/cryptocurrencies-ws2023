@@ -3,8 +3,6 @@ pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-// TODO: change token to the ERC20Token we use
-import "../src/Coin.sol";
 
 interface VoteTokenInterface {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
@@ -70,7 +68,7 @@ contract Voting {
 
     function startPoll(string memory _description) external onlyOwner returns (uint256) {
         bool allowMultipleOptions = false;
-        string[] memory options;
+        string[] memory options = new string[](2);
         options[0] = "Yes";
         options[1] = "No";
         return startPoll(_description, allowMultipleOptions, options);
@@ -84,7 +82,6 @@ contract Voting {
 
     function castVote(uint256 _pollID, uint256 _optionIndex, uint256 weight) public {
         require(getStatus(_pollID) == Status.IN_PROGRESS, "Poll is not in progress!");
-
         // check if msg.sender has the required balance to vote their desired weight
         require(_voteToken.balanceOf(msg.sender) >= weight, "Not enough vote tokens");
         require(weight > 0, "Cannot vote with 0 tokens!");

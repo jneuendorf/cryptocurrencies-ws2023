@@ -5,6 +5,7 @@ interface nftInterface {
     function isUpgrade(uint tokenId) external view returns(bool);
     function getLevel(uint tokenId) external view returns(uint8);
     function ownerOf(uint tokenId) external view returns(address);
+    function totalSupply() external view returns(uint256);
 }
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -51,6 +52,7 @@ contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
     function mint(uint256 _nftToken) public {
         require(msg.sender == nftContract.ownerOf(_nftToken), "You don't own this token");
         require(!hasMinted(_nftToken), "Token has already been used");
+        require(_nftToken < nftContract.totalSupply(), "NFT id does not exist");
         uint8 mintAmount;
         if (nftContract.isUpgrade(_nftToken)) {
             mintAmount = 1;
