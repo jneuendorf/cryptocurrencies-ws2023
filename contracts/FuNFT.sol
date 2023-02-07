@@ -4,22 +4,10 @@ pragma solidity 0.8.17;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract FuNFT is ERC721 {
+
+contract FuNFT is ERC721("FuNFT", "FUN") {
     address private _owner;
     uint256 private _totalSupply;
-
-    // _balances
-    // ~> mapping(address => uint256) balance;
-
-    // _owners
-    // ~> mapping(uint256 => address) tokenToOwner;
-
-    // _tokenApprovals
-    // ~> mapping(uint256 => address) tokenApprovals;
-
-    // _operatorApprovals
-    // ~> mapping to operator approvals
-    //    mapping(address => mapping(address => bool)) operatorApprovals;
 
     struct TokenInfo {
         uint256 id;
@@ -31,7 +19,7 @@ contract FuNFT is ERC721 {
     // access the token structs through this mapping
     mapping(uint256 => TokenInfo) private _infoByToken;
 
-    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
+    constructor() {
         _owner = msg.sender;
     }
 
@@ -39,24 +27,6 @@ contract FuNFT is ERC721 {
         require(msg.sender == _owner);
         _;
     }
-
-    // TODO: I think, we don't need this
-    // modifier onlyOwnerOrApproved(uint256 tokenId) {
-    //     address owner = ownerOf(tokenId);
-    //     // require(
-    //     //     (
-    //     //         owner == msg.sender
-    //     //         || getApproved(tokenId) == msg.sender
-    //     //         || isApprovedForAll(owner, msg.sender)
-    //     //     ),
-    //     //     "You need to be approved or owner"
-    //     // );
-    //     require(
-    //         _isApprovedOrOwner(owner, tokenId),
-    //         "You need to be approved or owner"
-    //     );
-    //     _;
-    // }
 
     /**
      * Let's the contract owner mint 1 new NFT token.
