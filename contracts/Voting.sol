@@ -4,22 +4,22 @@ pragma solidity 0.8.17;
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+
 interface VoteTokenInterface {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
     function balanceOf(address account) external view returns (uint256);
 }
 
+
 contract Voting {
     using Counters for Counters.Counter;
 
+    Counters.Counter private _pollIdCounter;
     // to vote transfer ERC20 token(s) to this address
     address owner;
 
-    Counters.Counter private _pollIdCounter;
-
     enum Status { PENDING, IN_PROGRESS, CLOSED }
     mapping(uint256 => Poll) polls;
-    // TODO: change token to the ERC20Token we use
     VoteTokenInterface private _voteToken;
 
     struct Poll {
@@ -51,7 +51,11 @@ contract Voting {
         _;
     }
 
-    function startPoll(string memory _description, bool _allowMultipleOptions, string[] memory _options) public onlyOwner returns (uint256) {
+    function startPoll(
+        string memory _description,
+        bool _allowMultipleOptions,
+        string[] memory _options
+    ) public onlyOwner returns (uint256) {
         uint256 pollId = _pollIdCounter.current();
         _pollIdCounter.increment();
         Poll storage poll = polls[pollId];
@@ -110,7 +114,6 @@ contract Voting {
 
         // iterate through the voting options
         for(uint256 votingOptionIndex; votingOptionIndex < poll.votingOptionsCount; votingOptionIndex++) {
-            // initialize vote counter
             uint256 amountVotes;
             // iterate through the votes everyone has sent
             for(uint voter = 0; voter < poll.voters.length; voter++) {
@@ -118,7 +121,7 @@ contract Voting {
                 // add votes for that voting option to the votes counter
                 amountVotes += poll.votes[voterAddress][votingOptionIndex];
             }
-            //put the result into the voting result-array
+            // put the result into the voting result-array
             result[votingOptionIndex] = amountVotes;
         }
         return result;

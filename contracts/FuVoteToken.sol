@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+
 interface nftInterface {
     function isUpgrade(uint tokenId) external view returns(bool);
     function getLevel(uint tokenId) external view returns(uint8);
@@ -8,13 +11,9 @@ interface nftInterface {
     function totalSupply() external view returns(uint256);
 }
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
     address private _contractOwner;
-    string private _name = "FuVoteToken";
-    string private _symbol = "FVT";
-
     address private _nftContractAddress;
     nftInterface private nftContract;
 
@@ -26,14 +25,6 @@ contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
         nftContract = nftInterface(nftContractAddress_);
     }
 
-    function name() public view  override returns (string memory) {
-        return _name;
-    }
-
-    function symbol() public view override returns (string memory) {
-        return _symbol;
-    }
-    
     function decimals() public pure override returns (uint8) {
         return 0;
     }
@@ -56,7 +47,8 @@ contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
         uint8 mintAmount;
         if (nftContract.isUpgrade(_nftToken)) {
             mintAmount = 1;
-        } else {
+        }
+        else {
             mintAmount = nftContract.getLevel(_nftToken);
         }
         _mint(msg.sender, mintAmount);
@@ -67,4 +59,3 @@ contract FuVoteToken is ERC20("FuVoteToken", "FVT") {
         return _minted[token];
     }
 }
-
