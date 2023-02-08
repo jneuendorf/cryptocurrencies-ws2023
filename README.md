@@ -27,3 +27,11 @@ Schwierigkeiten:
 
 Spezielle Eigenschaften
 - Sollte jeder transferieren können?
+
+
+## Testing
+
+```bash
+npm run build
+npm test
+```

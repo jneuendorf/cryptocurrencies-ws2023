@@ -20,34 +20,27 @@ describe('FuNFT', () => {
         expect(await token.balanceOf(wallet.address)).to.equal(0);
     });
 
-    // it('Transfer adds amount to destination account', async () => {
-    //     await token.transfer(walletTo.address, 7);
-    //     expect(await token.balanceOf(walletTo.address)).to.equal(7);
-    // });
+    it.only('Can be minted', async () => {
+        const level = 1;
+        const isUpgrade = false;
+        await token.mint(level, isUpgrade);
+    });
 
-    // it('Transfer emits event', async () => {
-    //     await expect(token.transfer(walletTo.address, 7))
-    //         .to.emit(token, 'Transfer')
-    //         .withArgs(wallet.address, walletTo.address, 7);
-    // });
+    it.only('Correctly outputs total supply and owned tokens after minting', async () => {
+        const level = 1;
+        const isUpgrade = false;
+        await token.mint(level, isUpgrade);
+        await token.mintTo(level, isUpgrade, walletTo.address);
+        expect(await token.totalSupply()).to.equal(2);
+        expect(await token.ownedTokens(walletTo.address)).to.have.length(1);
+    });
 
-    // it('Can not transfer above the amount', async () => {
-    //     await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
-    // });
-
-    // it('Can not transfer from empty account', async () => {
-    //     const tokenFromOtherWallet = token.connect(walletTo);
-    //     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
-    //         .to.be.reverted;
-    // });
-
-    // it('Calls totalSupply on FuNFT contract', async () => {
-    //     await token.totalSupply();
-    //     expect('totalSupply').to.be.calledOnContract(token);
-    // });
-
-    // it('Calls balanceOf with sender address on FuNFT contract', async () => {
-    //     await token.balanceOf(wallet.address);
-    //     expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
-    // });
+    it.only('Correctly outputs token info', async () => {
+        const level = 1;
+        const isUpgrade = false;
+        await token.mint(level, isUpgrade);
+        // TODO: the returned TokenInfo cannot be accessed unfortunenately
+        expect(await token.getLevel(0)).to.equal(level);
+        expect(await token.isUpgrade(0)).to.equal(isUpgrade);
+    });
 });
