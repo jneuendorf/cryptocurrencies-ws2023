@@ -1,0 +1,17 @@
+Testing for Voting
+
+- start Voting with Yes / No and with multiple options
+- let people Vote with tokens
+-- Once with all tokens on one options
+-- Once splitting the votes within multiple options
+--> Remember to give the Voting Contract address the approval to be able to create the transfer, 
+    the voting will not work, because the **Contract address** is the address that is requesting
+    the transfer in the Coin contract, not the msg.sender in this case
+
+- finish the Vote and give out the respective result
+--> Remember again to give the voting contract the approval to send all tokens back from the Owner
+    contract. 
+
+(- maybe create a version where the owner is approving the contract to send enough tokens, but the owner
+   does not have the tokens in their account any more and see what would happen then [finishing the vote
+   should not be able in that case])

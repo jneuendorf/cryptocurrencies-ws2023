@@ -43,4 +43,8 @@ describe('FuNFT', () => {
         expect(await token.getLevel(0)).to.equal(level);
         expect(await token.isUpgrade(0)).to.equal(isUpgrade);
     });
+
+    // TODO:
+    // - isUpgrade = True
+    // - multiple Levels
 });
