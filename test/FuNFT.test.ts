@@ -73,7 +73,7 @@ describe('FuNFT', () => {
             expect(await token.totalSupply()).to.equal(2);
         });
 
-        it.only('Can be minted multiple times to different recipients', async () => {
+        it('Can be minted multiple times to different recipients', async () => {
             await token.mintTo(2, false, walletTo.address);
             await token.mintTo(1, true, walletTo2.address);
             await token.mintTo(2, true, walletTo2.address);
@@ -88,6 +88,10 @@ describe('FuNFT', () => {
             expect(await token.ownedTokens(walletTo.address)).to.have.length(1);
             expect(await token.ownedTokens(walletTo2.address)).to.have.length(2);
         });
+    });
+
+    it.skip('Requires approval before letting others transfer tokens', () => {
+        // TODO: ?
     });
 
     // TODO:

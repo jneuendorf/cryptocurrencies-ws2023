@@ -1,9 +1,0 @@
-Testing for FuCoin
-
-- Mint with NFTs:
--- level == 1, level > 1, level > 1 && isUpgrade
-- Try to mint multiple times
-- Check total supply
-- Check balances of the addresses
-- Check the token approval for letting other addresses transfer tokens
-- Transfer the tokens to the approved address, by the approved address and back. Try again to test if the approval is used up
