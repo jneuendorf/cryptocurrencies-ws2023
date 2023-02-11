@@ -20,10 +20,10 @@ ERC20 Token Design (FuVoteToken)
 	Mit transferOwnership(address_to) können wir den ownership von einer andresse zur einer anderen übertragen. Dies kann nur der contractOwner tun
 
 ERC721 (FuNFT)
-    Wenn wir minten, dann soll auch angegeben werden ob es upgradebar ist. (Stufe)
+	Wenn wir minten, dann soll auch angegeben werden ob es upgradebar ist. (Stufe)
     
 Voting
-    1. startPoll() mit nur "Yes" und "No" als Optionen . Hierbei wird nur die Frage als string eingetragen. bool für multipleOptions is schon auf false gestellt als auch die Optionen nur auf "Yes" und "No" limitiert
+	1. startPoll() mit nur "Yes" und "No" als Optionen . Hierbei wird nur die Frage als string eingetragen. bool für multipleOptions is schon auf false gestellt als auch die Optionen nur auf "Yes" und "No" limitiert
     2. startPoll() mit mehreren Optionen. bool ob mehrere optionen erstellt werden können. Desweiteren können selbst Option erstellt werden
     castVote wird genutzt im zu Voten mit der Vorraussetzung, dass genügend Tokens vorhanden sind, um die gewünschte Gewichtsstufe errreicht wird.
 	desweiteren muss der zu Wählende akzeptieren, dass die Coins auf das Konto des Contract owners transferiert
