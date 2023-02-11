@@ -24,15 +24,14 @@ ERC721 (FuNFT)
 	Wenn wir minten, dann soll auch angegeben werden ob es upgradebar ist. (Stufe)
     
 Voting
+
 	1. startPoll() mit nur "Yes" und "No" als Optionen . Hierbei wird nur die Frage als string eingetragen. bool für multipleOptions is schon auf false gestellt als auch die Optionen nur auf "Yes" und "No" limitiert.
-	
-    2. startPoll() mit mehreren Optionen. bool ob mehrere optionen erstellt werden können. Desweiteren können selbst Option erstellt werden
-    
-    castVote wird genutzt im zu Voten mit der Vorraussetzung, dass genügend Tokens vorhanden sind, um die gewünschte Gewichtsstufe errreicht wird.
+	2. startPoll() mit mehreren Optionen. bool ob mehrere optionen erstellt werden können. Desweiteren können selbst Option erstellt werden
+    	castVote wird genutzt im zu Voten mit der Vorraussetzung, dass genügend Tokens vorhanden sind, um die gewünschte Gewichtsstufe errreicht wird.
 	desweiteren muss der zu Wählende akzeptieren, dass die Coins auf das Konto des Contract owners transferiert
-    endPoll, returnCoinsAfterPoll und getStatus macht genau das, was die Funktion sagt.
-    getResults iteriert durch die Votes und zählt zusammen die Stimmen für jede einzelne Option
-    formattedResults 
+	endPoll, returnCoinsAfterPoll und getStatus macht genau das, was die Funktion sagt.
+	getResults iteriert durch die Votes und zählt zusammen die Stimmen für jede einzelne Option
+	formattedResults 
 	
 
 Schwierigkeiten:
