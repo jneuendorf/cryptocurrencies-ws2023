@@ -2,7 +2,7 @@
     "name": "cryptocurrencies-ws2023",
     "version": "0.0.1",
     "description": "Ethereum voting system using ERC721 and ERC20",
-    "main": "src/index.js",
+    "main": "contracts/Voting.sol",
     "scripts": {
         "build": "waffle",
         "test": "NODE_ENV=test mocha"
