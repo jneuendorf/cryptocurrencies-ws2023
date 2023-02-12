@@ -79,21 +79,41 @@ contract Voting {
     }
 
     function endPoll(uint256 _pollID) external onlyOwner {
+        require(
+            getStatus(_pollID) == Status.IN_PROGRESS
+            || _pollID < _pollIdCounter.current(),
+            "Poll is not in progress or pollID does not exist"
+        );
         Poll storage poll = polls[_pollID];
         poll.status = Status.CLOSED;
         returnCoinsAfterPoll(_pollID);
     }
 
+    /**
+     * Requires approval from the voter beforehand to transfer coins from his/her account to this contract owner address.
+     * To do that call the approve-method in the ERC20-Token before casting the vote.
+     */
     function castVote(uint256 _pollID, uint256 _optionIndex, uint256 weight) public {
-        require(getStatus(_pollID) == Status.IN_PROGRESS, "Poll is not in progress!");
-        // check if msg.sender has the required balance to vote their desired weight
-        require(_voteToken.balanceOf(msg.sender) >= weight, "Not enough vote tokens");
-        require(weight > 0, "Cannot vote with 0 tokens!");
         address voter = msg.sender;
-        // requires approval from the voter beforehand to transfer coins from his/her account to this contract owner address
-        // to do that call the approve-method in the ERC20-Token before casting the vote
-        _voteToken.transferFrom(voter, owner, weight);
         Poll storage poll = polls[_pollID];
+
+        require(
+            getStatus(_pollID) == Status.IN_PROGRESS
+            || _pollID < _pollIdCounter.current(),
+            "Poll is not in progress or pollID does not exist"
+        );
+        // check if msg.sender has the required balance to vote their desired weight
+        require(_voteToken.balanceOf(voter) >= weight, "Not enough vote tokens");
+        require(weight > 0, "Cannot vote with 0 tokens!");
+        // check if the poll allows multiple options and then if the voter has already voted
+        require(
+            poll.allowMultipleOptions
+            || poll.addressToTotalVotes[voter] == 0,
+            "You can only vote once when allowMultipleOptions is set to false"
+        );
+        require(poll.votingOptionsCount > _optionIndex, "The optionIndex is higher than the amount of options");
+
+        _voteToken.transferFrom(voter, owner, weight);
         // add vote
         poll.votes[voter][_optionIndex] += weight;
         // if address has not voted before, push to list of voters
