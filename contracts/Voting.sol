@@ -97,11 +97,8 @@ contract Voting {
         address voter = msg.sender;
         Poll storage poll = polls[_pollID];
 
-        require(
-            getStatus(_pollID) == Status.IN_PROGRESS
-            || _pollID < _pollIdCounter.current(),
-            "Poll is not in progress or pollID does not exist"
-        );
+        require(getStatus(_pollID) == Status.IN_PROGRESS,  "Poll is not in progress");
+        require(_pollID < _pollIdCounter.current(), "Poll does not exist");
         // check if msg.sender has the required balance to vote their desired weight
         require(_voteToken.balanceOf(voter) >= weight, "Not enough vote tokens");
         require(weight > 0, "Cannot vote with 0 tokens!");
