@@ -8,27 +8,23 @@ import Voting from '../build/Voting.json';
 
 use(solidity);
 
-enum Status {
-    PENDING,
-    IN_PROGRESS,
-    CLOSED,
-};
+enum Status { PENDING, IN_PROGRESS, CLOSED };
 
 describe.only('Voting', () => {
     // TODO: Use fixtures: https://ethereum-waffle.readthedocs.io/en/latest/fixtures.html
     const [
-        wallet,
-        wallet2,
-        wallet3,
+        contractOwner,
+        alice,
+        bob,
     ] = new MockProvider().getWallets();
     let voting: Contract;
     let voteToken: Contract;
     let nft: Contract;
 
     beforeEach(async () => {
-        nft = await deployContract(wallet, FuNFT, []);
-        voteToken = await deployContract(wallet, FuVoteToken, [nft.address]);
-        voting = await deployContract(wallet, Voting, [voteToken.address]);
+        nft = await deployContract(contractOwner, FuNFT, []);
+        voteToken = await deployContract(contractOwner, FuVoteToken, [nft.address]);
+        voting = await deployContract(contractOwner, Voting, [voteToken.address]);
     });
 
     it('Can start standard yes/no poll', async () => {
@@ -39,54 +35,72 @@ describe.only('Voting', () => {
         expect(results.map(r => r[0])).to.deep.equal(['Yes', 'No']);
     });
 
-    it('Can start poll', async () => {
-        await voting.startPoll('poll', false, ['one', 'two', 'three']);
-        const pollId = 0;
-        expect(await voting.getStatus(pollId)).to.equal(Status.IN_PROGRESS);
-        const results: [string, object][] = await voting.formattedResults(pollId);
-        expect(results.map(r => r[0])).to.deep.equal(['one', 'two', 'three']);
-    });
-
     it.only('Can vote', async () => {
-        // WALLET 2 - NFT
-        await nft.mintTo(1, false, wallet2.address);
-        const wallet2TokenId = 0;
-        expect(await nft.ownerOf(wallet2TokenId)).to.equal(wallet2.address);
+        // ALICE - NFT
+        await nft.mintTo(1, false, alice.address);
+        const aliceTokenId = 0;
+        expect(await nft.ownerOf(aliceTokenId)).to.equal(alice.address);
 
-        // WALLET 2 - VOTE TOKEN
-        const voteTokenWallet2 = voteToken.connect(wallet2);
-        await voteTokenWallet2.mint(wallet2TokenId);
-        expect(await voteToken.hasMinted(wallet2TokenId)).to.equal(true);
-        await expect(voteTokenWallet2.mint(wallet2TokenId)).to.be.revertedWith('Token has already been used');
-        expect(await voteToken.balanceOf(wallet2.address)).to.equal(1);
+        // ALICE - VOTE TOKEN
+        const voteTokenAlice = voteToken.connect(alice);
+        await voteTokenAlice.mint(aliceTokenId);
+        expect(await voteToken.hasMinted(aliceTokenId)).to.equal(true);
+        await expect(voteTokenAlice.mint(aliceTokenId)).to.be.revertedWith('Token has already been used');
+        expect(await voteToken.balanceOf(alice.address)).to.equal(1);
 
-        // WALLET 3 - NFT
-        await nft.mintTo(2, false, wallet3.address);
-        await nft.mintTo(3, true, wallet3.address);
-        const wallet3Tokens = [1, 2];
-        expect(await nft.ownerOf(wallet3Tokens[0])).to.equal(wallet3.address);
-        expect(await nft.ownerOf(wallet3Tokens[1])).to.equal(wallet3.address);
+        // BOB - NFT
+        await nft.mintTo(2, false, bob.address);
+        await nft.mintTo(3, true, bob.address);
+        const bobTokens = [1, 2];
+        expect(await nft.ownerOf(bobTokens[0])).to.equal(bob.address);
+        expect(await nft.ownerOf(bobTokens[1])).to.equal(bob.address);
 
-        // WALLET 3 - VOTE TOKEN
-        const voteTokenWallet3 = voteToken.connect(wallet3);
-        await voteTokenWallet3.mint(wallet3Tokens[0]);
-        await voteTokenWallet3.mint(wallet3Tokens[1]);
-        expect(await voteToken.balanceOf(wallet3.address)).to.equal(3);
-
-        // APPROVAL
-        // await voteToken.approve(voting.address, 3);
-        // await nft.approve(voting.address, 1);
-        // await nft.approve(voting.address, 2);
+        // BOB - VOTE TOKEN
+        const voteTokenBob = voteToken.connect(bob);
+        await voteTokenBob.mint(bobTokens[0]);
+        await voteTokenBob.mint(bobTokens[1]);
+        expect(await voteToken.balanceOf(bob.address)).to.equal(3);
 
         // START POLL
-        // await voting.startPollYesNo('poll');
-        // const pollId = 0;
+        const pollId = 0;
+        const pollDescription = 'coffee party';
+        const allowMultipleOptions = true;
+        const pollOptions = ['cake', 'muffins', 'cookies'];
+        await voting.startPoll(pollDescription, allowMultipleOptions, pollOptions);
 
-        // CAST VOTES
-        // await voting.castVote(pollId, 0, 1);
+        // CAST VOTES - ALICE (1x CAKE)
+        const votingAlice = voting.connect(alice);
+        // unapproved vote should fail
+        await expect(
+            voting.castVote(pollId, pollOptions.indexOf('cake'), 1)
+        ).to.be.revertedWith('Not enough vote tokens');
+        await voteTokenAlice.increaseAllowance(contractOwner.address, 2);
+        await expect(
+            votingAlice.castVote(pollId, pollOptions.indexOf('cake'), 1)
+        ).to.be.revertedWith('????');
+        // await votingAlice.castVote(pollId, pollOptions.indexOf('cake'), 1);
+        // even though the allowance is high enough, Alice has only 1 vote token
+        // await expect(
+        //     votingAlice.castVote(pollId, pollOptions.indexOf('muffins'), 1)
+        // ).to.be.revertedWith('Not enough vote tokens');
+
+        // CAST VOTES - BOB (1x CAKE, 1x MUFFINS, 1x COOKIES)
+        // const votingBob = voting.connect(alice);
+        // await voteTokenBob.increaseAllowance(contractOwner.address, 2);
+        // await votingBob.castVote(pollId, pollOptions.indexOf('cake'), 1);
+        // await votingBob.castVote(pollId, pollOptions.indexOf('muffins'), 1);
+        // await votingBob.castVote(pollId, pollOptions.indexOf('cookies'), 1);
+
+        // VOTERS SHOULD HAVE NO VOTE TOKENS ANYMORE
+        // ...
 
         // END POLL
+        await voting.endPoll(pollId);
 
+        // VOTERS SHOULD HAVE THEIR VOTE TOKENS BACK
+        // ...
+
+        // VERIFY RESULTS
+        expect(await voting.getResults(pollId)).to.deep.equal([2, 1, 1]);
     });
-
 });
