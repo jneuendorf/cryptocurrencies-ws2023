@@ -25,10 +25,8 @@ Für die NFTs gelten folgende Bedingungen:
 
 - Die decimal number ist 0, es gibt nur ganze Tokens
 - Jeder, der ein NFT besitzt, sollte tokens minten können -- Jedes NFT sollte nur einmal minten können (mapping(tokenId => bool) minted)
-- Beim minten: Update-NFTs geben nur einen Token, andere abhängig vom Level (n + 1)
-- Lock Funktion oder nur Contract Owner darf Tokens umverteilen oder man transferiert Tokens bei Poll
-- Mit `transferOwnership(address_to)` können wir den ownership von einer andresse zur einer anderen übertragen. Dies kann nur der Contract Owner tun
-
+- Beim minten: Update-NFTs geben nur einen Token, andere abhängig vom Level
+- 
 
 
 ## ERC721 (`FuNFT`)
@@ -39,26 +37,19 @@ Für die NFTs gelten folgende Bedingungen:
 
 ## Voting
 
-1. `startPoll()` mit nur "Yes" und "No" als Optionen.
+- `startPoll()` mit nur "Yes" und "No" als Optionen.
    Hierbei wird nur die Frage als string eingetragen. bool für `multipleOptions` ist schon auf false gestellt als auch die Optionen nur auf "Yes" und "No" limitiert.
-1. `startPoll()` mit mehreren Optionen. bool ob mehrere optionen erstellt werden können. Desweiteren können selbst Option erstellt werden
-1. `castVote` wird genutzt, um zu Voten. Vorraussetzung ist, dass genügend Tokens vorhanden sind, um die gewünschten Stimmen für die Wahl zu nutzen. Des Weiteren muss der Wählende akzeptieren, dass die Coins auf das Konto des Contract owners transferiert werden.
-1. `endPoll`, `returnCoinsAfterPoll` und `getStatus` macht genau das, was die Funktion sagt.
-1. `getResults` iteriert durch die Votes und zählt zusammen die Stimmen für jede einzelne Option
-1. `formattedResults`
+- `startPoll()` mit mehreren Optionen. bool ob mehrere optionen erstellt werden können. Desweiteren können selbst Option erstellt werden
+- `castVote` wird genutzt, um zu Voten. Vorraussetzung ist, dass genügend Tokens vorhanden sind, um die gewünschten Stimmen für die Wahl zu nutzen. Des Weiteren muss der Wählende akzeptieren, dass die Coins auf das Konto des Contract owners transferiert werden.
+- `endPoll`, `returnCoinsAfterPoll` und `getStatus` macht genau das, was die Funktion sagt.
+- `getResults` iteriert durch die Votes und zählt zusammen die Stimmen für jede einzelne Option
+- `formattedResults`
 
+## Limitierungen
 
-## Schwierigkeiten:
-
-- Inter-Contract-Kommunikation
-
-
-
-## Spezielle Eigenschaften
-
-- Sollte jeder transferieren können?
-
-
+- Der Contract owner darf nicht voten, weil er unendlich viele Stimmen hätte, dadurch dass die Voting tokens zu seiner Adresse gesendet werden und nach dem Poll wieder zurück -> das sollte optimiert werden in einem realen Smart Contract
+- Vor jedem voten und beim zurückschicken müssen die votenden bzw der owner dem Voting-contract die berechtigung geben, die tokens zu versenden. Das macht man über increase allowance mit der Adresse des Voting-contracts und der Anzahl der Tokens. Tokenanzahl kann aber höher als aktuelle balance gewählt werden, um spätere Funktionsaufrufe und damit verbundene Kosten zu vermeiden
+-- Das liegt daran, dass bei einem Funktionsaufruf eines contracts nicht der ursprüngliche Aufrufer bei dem Funktionsaufruf als msg.sender auftaucht, sondern die contract-Adresse, die diesen Funktionsaufruf getätigt hat
 
 ## Projektverlauf:
 
@@ -73,3 +64,4 @@ Für die NFTs gelten folgende Bedingungen:
 - 27.01 Zweites Meeting OpenZeppeline angeschaut über den ERC721 Contract
 - 30.01 Drittes meeting Code gearbeitet
 - 09.02 Tests schreiben
+- 12.02 Vorstellung
