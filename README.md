@@ -26,7 +26,7 @@ Für die NFTs gelten folgende Bedingungen:
 - Die decimal number ist 0, es gibt nur ganze Tokens
 - Jeder, der ein NFT besitzt, sollte tokens minten können -- Jedes NFT sollte nur einmal minten können (mapping(tokenId => bool) minted)
 - Beim minten: Update-NFTs geben nur einen Token, andere abhängig vom Level
-- 
+
 
 
 ## ERC721 (`FuNFT`)
@@ -45,11 +45,16 @@ Für die NFTs gelten folgende Bedingungen:
 - `getResults` iteriert durch die Votes und zählt zusammen die Stimmen für jede einzelne Option
 - `formattedResults`
 
+
+
 ## Limitierungen
 
-- Der Contract owner darf nicht voten, weil er unendlich viele Stimmen hätte, dadurch dass die Voting tokens zu seiner Adresse gesendet werden und nach dem Poll wieder zurück -> das sollte optimiert werden in einem realen Smart Contract
-- Vor jedem voten und beim zurückschicken müssen die votenden bzw der owner dem Voting-contract die berechtigung geben, die tokens zu versenden. Das macht man über increase allowance mit der Adresse des Voting-contracts und der Anzahl der Tokens. Tokenanzahl kann aber höher als aktuelle balance gewählt werden, um spätere Funktionsaufrufe und damit verbundene Kosten zu vermeiden
--- Das liegt daran, dass bei einem Funktionsaufruf eines contracts nicht der ursprüngliche Aufrufer bei dem Funktionsaufruf als msg.sender auftaucht, sondern die contract-Adresse, die diesen Funktionsaufruf getätigt hat
+- Der Contract owner darf nicht voten, weil er unendlich viele Stimmen hätte, dadurch dass die Voting tokens zu seiner Adresse gesendet werden und nach dem Poll wieder zurück
+  - das sollte optimiert werden in einem realen Smart Contract
+- Vor jedem Voten und beim Zurückschicken müssen die Votenden bzw. der owner dem Voting-contract die Berechtigung geben, die tokens zu versenden. Das macht man über increase allowance mit der Adresse des Voting-contracts und der Anzahl der Tokens. Tokenanzahl kann aber höher als aktuelle balance gewählt werden, um spätere Funktionsaufrufe und damit verbundene Kosten zu vermeiden
+  - Das liegt daran, dass bei einem Funktionsaufruf eines contracts nicht der ursprüngliche Aufrufer bei dem Funktionsaufruf als msg.sender auftaucht, sondern die contract-Adresse, die diesen Funktionsaufruf getätigt hat
+
+
 
 ## Projektverlauf:
 
