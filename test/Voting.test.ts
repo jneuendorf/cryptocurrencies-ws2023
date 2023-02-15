@@ -1,5 +1,5 @@
 import { expect, use } from 'chai';
-import { Contract } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import { deployContract, MockProvider, solidity } from 'ethereum-waffle';
 
 import FuNFT from '../build/FuNFT.json';
@@ -101,6 +101,10 @@ describe.only('Voting', () => {
         // ...
 
         // VERIFY RESULTS
-        expect(await voting.getResults(pollId)).to.deep.equal([2, 1, 1]);
+        expect(await voting.getResults(pollId)).to.deep.equal([
+            BigNumber.from(2),
+            BigNumber.from(1),
+            BigNumber.from(1),
+        ]);
     });
 });
