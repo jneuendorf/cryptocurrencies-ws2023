@@ -74,22 +74,19 @@ describe.only('Voting', () => {
         await expect(
             voting.castVote(pollId, pollOptions.indexOf('cake'), 1)
         ).to.be.revertedWith('Not enough vote tokens');
-        await voteTokenAlice.increaseAllowance(contractOwner.address, 2);
-        await expect(
-            votingAlice.castVote(pollId, pollOptions.indexOf('cake'), 1)
-        ).to.be.revertedWith('????');
-        // await votingAlice.castVote(pollId, pollOptions.indexOf('cake'), 1);
+        await voteTokenAlice.increaseAllowance(voting.address, 2);
+        await votingAlice.castVote(pollId, pollOptions.indexOf('cake'), 1);
         // even though the allowance is high enough, Alice has only 1 vote token
-        // await expect(
-        //     votingAlice.castVote(pollId, pollOptions.indexOf('muffins'), 1)
-        // ).to.be.revertedWith('Not enough vote tokens');
+        await expect(
+            votingAlice.castVote(pollId, pollOptions.indexOf('muffins'), 1)
+        ).to.be.revertedWith('Not enough vote tokens');
 
         // CAST VOTES - BOB (1x CAKE, 1x MUFFINS, 1x COOKIES)
-        // const votingBob = voting.connect(alice);
-        // await voteTokenBob.increaseAllowance(contractOwner.address, 2);
-        // await votingBob.castVote(pollId, pollOptions.indexOf('cake'), 1);
-        // await votingBob.castVote(pollId, pollOptions.indexOf('muffins'), 1);
-        // await votingBob.castVote(pollId, pollOptions.indexOf('cookies'), 1);
+        const votingBob = voting.connect(alice);
+        await voteTokenBob.increaseAllowance(voting.address, 3);
+        await votingBob.castVote(pollId, pollOptions.indexOf('cake'), 1);
+        await votingBob.castVote(pollId, pollOptions.indexOf('muffins'), 1);
+        await votingBob.castVote(pollId, pollOptions.indexOf('cookies'), 1);
 
         // VOTERS SHOULD HAVE NO VOTE TOKENS ANYMORE
         // ...
