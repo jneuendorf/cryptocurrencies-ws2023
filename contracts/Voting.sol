@@ -70,7 +70,7 @@ contract Voting {
         return pollId;
     }
 
-    function startPoll(string memory _description) external onlyOwner returns (uint256) {
+    function startPollYesNo(string memory _description) external onlyOwner returns (uint256) {
         bool allowMultipleOptions = false;
         string[] memory options = new string[](2);
         options[0] = "Yes";

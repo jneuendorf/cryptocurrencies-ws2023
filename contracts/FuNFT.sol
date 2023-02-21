@@ -41,7 +41,7 @@ contract FuNFT is ERC721("FuNFT", "FUN") {
         return _infoByToken[nextTokenId];
     }
 
-    function mint(uint8 level, bool isUpgrade_, address to) external onlyOwner returns(TokenInfo memory) {
+    function mintTo(uint8 level, bool isUpgrade_, address to) external onlyOwner returns(TokenInfo memory) {
         TokenInfo memory info = mint(level, isUpgrade_);
         _safeTransfer(_owner, to, info.id, "");
 

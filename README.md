@@ -6,7 +6,7 @@ Wir wollen zwei Contracts bauen, einen NFT Contract (ERC721) und einen Coin Cont
 
 
 
-## NFT
+### NFT
 
 Das NFT soll dazu da sein, als ein Zertifikat zu dienen, mit welchem man mit dem ERC20 Contract kommunizieren kann, um Tokens zu erhalten.
 Diese Tokens könnten dann zum Beispiel zum Voten in einem dezentralen System genutzt werden, oder einfach als Währung.
@@ -21,7 +21,7 @@ Für die NFTs gelten folgende Bedingungen:
 
 
 
-## ERC20 Token Design (`FuVoteToken`)
+### ERC20 Token Design (`FuVoteToken`)
 
 - Die decimal number ist 0, es gibt nur ganze Tokens
 - Jeder, der ein NFT besitzt, sollte tokens minten können -- Jedes NFT sollte nur einmal minten können (mapping(tokenId => bool) minted)
@@ -31,13 +31,13 @@ Für die NFTs gelten folgende Bedingungen:
 
 
 
-## ERC721 (`FuNFT`)
+### ERC721 (`FuNFT`)
 
 - Wenn wir minten, dann soll auch angegeben werden, ob es upgradebar ist. (Stufe)
 
 
 
-## Voting
+### Voting
 
 1. `startPoll()` mit nur "Yes" und "No" als Optionen.
    Hierbei wird nur die Frage als string eingetragen. bool für `multipleOptions` ist schon auf false gestellt als auch die Optionen nur auf "Yes" und "No" limitiert.
@@ -46,6 +46,16 @@ Für die NFTs gelten folgende Bedingungen:
 1. `endPoll`, `returnCoinsAfterPoll` und `getStatus` macht genau das, was die Funktion sagt.
 1. `getResults` iteriert durch die Votes und zählt zusammen die Stimmen für jede einzelne Option
 1. `formattedResults`
+
+
+
+## Testing
+
+```bash
+npm run build
+npm test
+```
+
 
 
 ## Schwierigkeiten:
